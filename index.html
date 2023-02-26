@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CSV檔案</title>
+</head>
+<body>
+  <h1>CSV檔案</h1>
+  <table id="table"></table>
+  <p id="text"></p>
+
+  <script>
+    // 獲取CSV檔案的URL
+    const url = "path/to/your/csv/file.csv";
+
+    // 發送HTTP請求並處理響應
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        // 將CSV數據轉換為HTML表格
+        const table = csvToTable(data);
+        document.getElementById("table").innerHTML = table;
+
+        // 將CSV數據轉換為純文本
+        const text = csvToText(data);
+        document.getElementById("text").textContent = text;
+      });
+
+    // 將CSV數據轉換為HTML表格
+    function csvToTable(csv) {
+      const rows = csv.split("\n");
+      const table = "<thead><tr><th>" + rows[0].split(",").join("</th><th>") + "</th></tr></thead><tbody>";
+      for (let i = 1; i < rows.length; i++) {
+        table += "<tr><td>" + rows[i].split(",").join("</td><td>") + "</td></tr>";
+      }
+      table += "</tbody>";
+      return table;
+    }
+
+    // 將CSV數據轉換為純文本
+    function csvToText(csv) {
+      return csv.replace(/,/g, "\t");
+    }
+  </script>
+</body>
+</html>
