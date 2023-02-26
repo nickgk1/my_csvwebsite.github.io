@@ -8,25 +8,29 @@
   <h1>AAPL_2year_minute.csv</h1>
   <table id="table"></table>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   <script>
     // 獲取CSV檔案的URL
-    const url = "https://github.com/nickgk1/aaplcsv/blob/d638e157f3eb5713695e922b89cec04b970cf13a/AAPL_2year_minute.csv";
+    const url = "https://raw.githubusercontent.com/nickgk1/aaplcsv/d638e157f3eb5713695e922b89cec04b970cf13a/AAPL_2year_minute.csv";
 
     // 發送HTTP請求並處理響應
-    Papa.parse(url, {
-      download: true,
-      header: true,
-      complete: function(results) {
-        // 將解析後的數據轉換為HTML表格
-        const table = results.data.map(function(row) {
-          return "<tr>" + Object.values(row).map(function(cell) {
-            return "<td>" + cell + "</td>";
-          }).join("") + "</tr>";
-        }).join("");
-        document.getElementById("table").innerHTML = "<tbody>" + table + "</tbody>";
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        // 將CSV數據轉換為HTML表格
+        const table = csvToTable(data);
+        document.getElementById("table").innerHTML = table;
+      });
+
+    // 將CSV數據轉換為HTML表格
+    function csvToTable(csv) {
+      const rows = csv.split("\n");
+      const table = "<thead><tr><th>" + rows[0].split(",").join("</th><th>") + "</th></tr></thead><tbody>";
+      for (let i = 1; i < rows.length; i++) {
+        table += "<tr><td>" + rows[i].split(",").join("</td><td>") + "</td></tr>";
       }
-    });
+      table += "</tbody>";
+      return table;
+    }
   </script>
 </body>
 </html>
