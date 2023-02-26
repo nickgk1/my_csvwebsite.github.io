@@ -2,35 +2,24 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AAPL_2year_minute.csv</title>
+  <title>AAPL_2year_minute</title>
 </head>
 <body>
-  <h1>AAPL_2year_minute.csv</h1>
-  <table id="table"></table>
+  <h1>AAPL_2year_minute</h1>
+
+  <div id="content"></div>
 
   <script>
-    // 獲取CSV檔案的URL
-    const url = "AAPL_2year_minute.csv";
+    // 獲取HTML檔案的URL
+    const url = "https://raw.githubusercontent.com/nickgk1/htmldata/dc2273cd591e4c9da05d9f5d0c99a47d3265ed4c/AAPL_2year_minute.html";
 
     // 發送HTTP請求並處理響應
     fetch(url)
       .then(response => response.text())
       .then(data => {
-        // 將CSV數據轉換為HTML表格
-        const table = csvToTable(data);
-        document.getElementById("table").innerHTML = table;
+        // 在頁面上顯示HTML內容
+        document.getElementById("content").innerHTML = data;
       });
-
-    // 將CSV數據轉換為HTML表格
-    function csvToTable(csv) {
-      const rows = csv.split("\n");
-      const table = "<thead><tr><th>" + rows[0].split(",").join("</th><th>") + "</th></tr></thead><tbody>";
-      for (let i = 1; i < rows.length; i++) {
-        table += "<tr><td>" + rows[i].split(",").join("</td><td>") + "</td></tr>";
-      }
-      table += "</tbody>";
-      return table;
-    }
   </script>
 </body>
 </html>
